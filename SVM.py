@@ -228,3 +228,26 @@ mi_svm_adam = SVM_(X,W_adam , b_adam).Clasificacion()
 y_predadam =np.where(mi_svm_adam ==-1,0,mi_svm_adam)
 y_real = np.where(y ==-1,0,y)
 y_predadam == y_real
+
+
+def Matriz_confusion(predicho,real):
+
+    predicho2 = np.where(predicho==1,0,1)
+    real2 = np.where(real==1,0,1)
+
+    Predicho = np.stack((predicho, predicho2), axis=-1)
+    Real = np.stack((real, real2), axis=-1)
+
+    matriz = np.dot(Predicho.T,Real)
+
+    Precision = matriz[0][0]/(matriz[0][0] + matriz[0][1])
+    Sensibilidad = matriz[0][0]/(matriz[0][0] + matriz[1][0])
+
+    return matriz,Precision,Sensibilidad
+
+
+M ,p,s =Matriz_confusion(y_predadam,y_real)
+M1 ,p1,s1 =Matriz_confusion(y_pred,y_real)
+
+
+
