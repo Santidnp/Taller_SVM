@@ -103,7 +103,7 @@ def desGradiente(X,y,**kwargs):
     
 
     J = Perdida(X,y,W,b).J()-l*(LA.norm(W)+b**2)
-    print(J)
+    
 
     
     while J > e and i < I and not stop:
@@ -137,4 +137,10 @@ W_train , b_train,=desGradiente(X,y,debug =True,max_iter=100000)
 
 mi_svm = SVM_(X,W_train,b_train).Clasificacion()
 
+y_pred =np.where(mi_svm ==-1,0,mi_svm)
+y_real = np.where(y ==-1,0,y)
+y_pred == y_real
 
+
+def Adam():
+    pass
