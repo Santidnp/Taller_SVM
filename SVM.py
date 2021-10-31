@@ -245,8 +245,11 @@ def Matriz_confusion(predicho,real):
 
     Precision = matriz[0][0]/(matriz[0][0] + matriz[0][1])
     Sensibilidad = matriz[0][0]/(matriz[0][0] + matriz[1][0])
+    Accuracy_ = np.trace(matriz)/np.sum(matriz)
+    F1_score = 2*(Precision*Sensibilidad)/(Precision+Sensibilidad)
 
-    return matriz,Precision,Sensibilidad
+
+    return matriz,Precision,Sensibilidad,Accuracy_,F1_score
 
 
 M ,p,s =Matriz_confusion(y_predadam,y_real)
