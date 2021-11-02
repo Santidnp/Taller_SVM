@@ -252,7 +252,7 @@ y_pred = np.where(Misvm==-1,0,Misvm)
 y_adam = np.where(Misvm_Adam==-1,0,Misvm_Adam)
 
 M ,p,s,f1,acc =Matriz_confusion(y_pred,x[:,-1])
-M1 ,p1,s1 =Matriz_confusion(y_pred,x[:,-1])
+M1 ,p1,s1,f1_1,acc1 =Matriz_confusion(y_pred,x[:,-1])
 
 
 def Figuras(x,W,b,Costo):
