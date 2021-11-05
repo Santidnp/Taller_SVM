@@ -114,8 +114,12 @@ def desGradiente_batch(Datos,**kwargs):
 
         if debug:  
             plt.title('SVM con batch ='+str(Batch)+', alpha = ' + str(a)+ ' lambda = '+str(l))
+            Z = np.arange(np.min(X[:, 0]),np.max(X[:, 0]),0.1)
+            V = -(W[0]/W[1])*Z+b/W[1]
             plt.scatter(X[:, 0], X[:, 1], c=y, s=5,cmap=cmap)
             plt.plot(X[:, 0],-(W[0]/W[1])*X[:, 0]+b/W[1])
+            plt.fill_between(Z,V, color='#E08B7D',alpha=0.4)
+            plt.fill_between(Z,V,np.max(V),color='#16B1F5',alpha=0.4)
             plt.xlim(0,max(X[:, 0]))
             plt.ylim(0,max(X[:, 1]))
             plt.pause(0.000001)
@@ -123,6 +127,7 @@ def desGradiente_batch(Datos,**kwargs):
         Dict.append(Perdida(X,y,W,b).J())
         i+=1
     return W,b,Dict
+
 
 
 
@@ -149,7 +154,7 @@ def Adam_Batch(Datos,**kwargs):
     if 'reg_type' in kwargs: lt = kwargs[ 'reg_type' ]
     if 'max_iter' in kwargs: I = int( kwargs[ 'max_iter' ] )
     if 'epsilon' in kwargs: e = float( kwargs[ 'epsilon' ] )
-    if 'Debug' in kwargs: debug = kwargs[ 'debug' ] 
+    if 'debug' in kwargs: debug = kwargs[ 'debug' ] 
     if 'batch_' in kwargs: Batch = kwargs['batch_']
 
     W = np.random.random(2)
@@ -201,15 +206,19 @@ def Adam_Batch(Datos,**kwargs):
         
         if debug:  
             plt.title('SVM ADAM con batch ='+str(Batch)+', alpha = ' + str(a)+ ' lambda = '+str(l))
+            Z = np.arange(np.min(X[:, 0]),np.max(X[:, 0]),0.1)
+            V = -(W[0]/W[1])*Z+b/W[1]
             plt.scatter(X[:, 0], X[:, 1], c=y, s=5,cmap=cmap)
             plt.plot(X[:, 0],-(W[0]/W[1])*X[:, 0]+b/W[1])
+            plt.fill_between(Z,V, color='#E08B7D',alpha=0.4)
+            plt.fill_between(Z,V,np.max(V),color='#16B1F5',alpha=0.4)
             plt.xlim(0,max(X[:, 0]))
             plt.ylim(0,max(X[:, 1]))
             plt.pause(0.000001)
             plt.clf()
         Dict.append(Perdida(X,y,W,b).J())
             
-        i+=1
+        
     return W,b,Dict
 
 
@@ -237,7 +246,7 @@ def Matriz_confusion(predicho,real):
 
         
 
-W_train , b_train,Costo =desGradiente_batch(x,debug = False,max_iter=100000)
+W_train , b_train,Costo =desGradiente_batch(x,debug = True,max_iter=100000)
 #estocástico
 W_trainSGD , b_trainSGD,CostoSGD =desGradiente_batch(x,debug =False,max_iter=100000,batch_=200)
 #Mini-batch
@@ -252,34 +261,42 @@ y_pred = np.where(Misvm==-1,0,Misvm)
 y_adam = np.where(Misvm_Adam==-1,0,Misvm_Adam)
 
 M ,p,s,f1,acc =Matriz_confusion(y_pred,x[:,-1])
-M1 ,p1,s1,f1_1,acc1 =Matriz_confusion(y_pred,x[:,-1])
+M1 ,p1,s1,f1_1,acc1 =Matriz_confusion(y_adam,x[:,-1])
 
 
-def Figuras(x,W,b,Costo):
+def Figuras(x,W,b,Costo,numero_iteraciones = 2000):
     cmap   = matplotlib.colors.ListedColormap( [ 'k', 'g' ] )
     fig, (ax1, ax2) = plt.subplots(1, 2)
-    fig.suptitle('Suppor Vector Machine')
+    fig.suptitle('Support Vector Machine')
     ax1.scatter(x[:, 0], x[:, 1], c=x[:, 2], s=5,cmap=cmap)
     ax1.set_title('Plano estimado')
     ax1.set_xlabel('Variable x1')
     ax1.set_ylabel('Variable x2')
+    
+    Z = np.arange(np.min(x[:, 0]),np.max(x[:, 0]),0.1)
+    y = -(W[0]/W[1])*Z+b/W[1]
 
 
 
     #plt.plot(X[:, 0],-(W[0]/W[1])*X[:, 0]-b/W[1])
+   
     ax1.plot(x[:, 0],-(W[0]/W[1])*x[:, 0]+b/W[1])
+    ax1.fill_between(Z,y, color='#E08B7D',alpha=0.5)
+    ax1.fill_between(Z,y,np.max(y),color='#16B1F5',alpha=0.5)
+
     #plt.plot(X[:, 0],-(W_adam[0]/W_adam[1])*X[:, 0]+b_adam/W_adam[1])
 
     ax1.set_xlim(0,max(x[:, 0]))
     ax1.set_ylim(0,max(x[:, 1]))
-    ax2.set_title('Funcion de Costo primeras 2000 iteraciones')
-    ax2.plot(Costo[0:2000])
+    ax2.set_title('Funcion de Costo primeras '+ str(numero_iteraciones)+' iteraciones')
+    ax2.plot(Costo[0:numero_iteraciones])
     ax2.set_xlabel('Itearciones')
     ax2.set_ylabel('Función de Costo')
     plt.show()
 
 
-Figuras(x,W_train ,b_train,Costo)
+Figuras(x,W_train ,b_train,Costo,numero_iteraciones=5000)
+Figuras(x, W_trainAdam , b_trainAdam,CostoAdam,numero_iteraciones=5000)
 
 
 
@@ -442,4 +459,5 @@ def Adam(X,y,**kwargs):
     
     return W,b
  '''
+
 
