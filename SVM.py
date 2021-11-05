@@ -256,12 +256,16 @@ W_trainAdam , b_trainAdam,CostoAdam =Adam_Batch(x,debug =False,max_iter=100000,b
 
 Misvm = SVM_(x[:,:-1],W_train ,b_train).Clasificacion()
 Misvm_Adam = SVM_(x[:,:-1],W_trainAdam , b_trainAdam).Clasificacion()
+Misvm_Esto= SVM_(x[:,:-1],W_trainSGD , b_trainSGD).Clasificacion()
+Misvm_Mini= SVM_(x[:,:-1],W_trainMini , b_trainMini).Clasificacion()
 
 y_pred = np.where(Misvm==-1,0,Misvm)
 y_adam = np.where(Misvm_Adam==-1,0,Misvm_Adam)
-
+y_Esto = np.where(Misvm_Esto==-1,0,Misvm_Esto)
+y_mini = np.where(Misvm_Mini==-1,0,Misvm_Mini)
 M ,p,s,f1,acc =Matriz_confusion(y_pred,x[:,-1])
 M1 ,p1,s1,f1_1,acc1 =Matriz_confusion(y_adam,x[:,-1])
+M_esto ,p_esto,s_esto,f1_esto,acc_esto =Matriz_confusion(y_Esto,x[:,-1])
 
 
 def Figuras(x,W,b,Costo,numero_iteraciones = 2000):
@@ -290,6 +294,8 @@ def Figuras(x,W,b,Costo,numero_iteraciones = 2000):
     ax1.set_ylim(0,max(x[:, 1]))
     ax2.set_title('Funcion de Costo primeras '+ str(numero_iteraciones)+' iteraciones')
     ax2.plot(Costo[0:numero_iteraciones])
+    #ax2.set_xlim(0,max(x[:, 0]))
+    ax2.set_ylim(0,1e-8)
     ax2.set_xlabel('Itearciones')
     ax2.set_ylabel('Función de Costo')
     plt.show()
@@ -297,6 +303,7 @@ def Figuras(x,W,b,Costo,numero_iteraciones = 2000):
 
 Figuras(x,W_train ,b_train,Costo,numero_iteraciones=5000)
 Figuras(x, W_trainAdam , b_trainAdam,CostoAdam,numero_iteraciones=5000)
+Figuras(x,W_trainSGD , b_trainSGD,CostoSGD,numero_iteraciones=5000)
 
 
 
