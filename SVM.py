@@ -245,7 +245,7 @@ def Matriz_confusion(predicho,real):
 
 
         
-
+#Dg normal
 W_train , b_train,Costo =desGradiente_batch(x,debug = True,max_iter=100000)
 #estocástico
 W_trainSGD , b_trainSGD,CostoSGD =desGradiente_batch(x,debug =False,max_iter=100000,batch_=200)
