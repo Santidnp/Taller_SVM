@@ -295,7 +295,7 @@ def Figuras(x,W,b,Costo,numero_iteraciones = 2000):
     ax2.set_title('Funcion de Costo primeras '+ str(numero_iteraciones)+' iteraciones')
     ax2.plot(Costo[0:numero_iteraciones])
     #ax2.set_xlim(0,max(x[:, 0]))
-    ax2.set_ylim(0,1e-8)
+    #ax2.set_ylim(0,1e-8)
     ax2.set_xlabel('Itearciones')
     ax2.set_ylabel('Función de Costo')
     plt.show()
@@ -304,6 +304,7 @@ def Figuras(x,W,b,Costo,numero_iteraciones = 2000):
 Figuras(x,W_train ,b_train,Costo,numero_iteraciones=5000)
 Figuras(x, W_trainAdam , b_trainAdam,CostoAdam,numero_iteraciones=5000)
 Figuras(x,W_trainSGD , b_trainSGD,CostoSGD,numero_iteraciones=5000)
+Figuras(x,W_trainMini , b_trainMini,CostoMini,numero_iteraciones=5000)
 
 
 
